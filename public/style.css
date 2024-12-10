@@ -1,7 +1,265 @@
-body{
-  padding-top:80px;
-  word-wrap:break-word;
+/* General styles for the page */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: white;
+  color: black;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
-img{
-  height: 200px;
+
+/* Main container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Image styling */
+img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+/* Jumbotron container */
+.jumbotron {
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* Jumbotron image */
+.jumbotron img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+/* Base button styling */
+.button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.button:hover {
+  background-color: black;
+  color: white;
+}
+
+/* Specific button types */
+.counter-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.strike-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.ball-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.end-session-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Counter container */
+.counter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+  width: 90%;
+}
+
+/* Strikezone container */
+.strikezone-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* Strikezone layout */
+.strikezone-row {
+  display: flex;
+  justify-content: center;
+  margin: none;
+}
+
+.strikezone-box {
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.strikezone-box:hover {
+  background-color: #f0f0f0;
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
+  width: 90%;
+}
+
+/* Headings */
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+/* Session info container */
+.session-info-container {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  text-align: center;
+  margin: 10px auto;
+}
+
+/* Input field */
+#session-name {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+/* Link styling */
+a {
+  color: red;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Horizontal rule */
+hr {
+  border: 0;
+  height: 1px;
+  background: #ccc;
+  margin: 20px 0;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  /* For mobile */
+  .container {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .jumbotron {
+    padding: 20px 10px;
+  }
+
+  img {
+    max-width: 150px;
+  }
+
+  .button {
+    font-size: 14px;
+    padding: 8px 15px;
+    width: 80%; /* Center and make buttons larger */
+  }
+
+  .counter-container,
+  .strikezone-container {
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .button-container {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 24px; /* Adjust heading size */
+  }
+
+  #session-name {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 769px) {
+  /* For desktop */
+  .button-container,
+  .counter-container,
+  .strikezone-container {
+    width: 90%;
+  }
+
+  .button {
+    width: auto; /* Restore button width */
+  }
+
+  h1 {
+    font-size: 28px;
+  }
 }

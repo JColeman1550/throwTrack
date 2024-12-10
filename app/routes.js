@@ -1,117 +1,103 @@
 module.exports = function(app, passport, db) {
+  // Show the home page
+  app.get('/', function(req, res) {
+    res.render('index.ejs');
+  });
 
-// normal routes ===============================================================
-
-    // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
-        res.render('index.ejs');
-    });
-
-    // PROFILE SECTION =========================
-    app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
-          if (err) return console.log(err)
-          res.render('profile.ejs', {
-            user : req.user,
-            messages: result
-          })
-        })
-    });
-
-    // LOGOUT ==============================
-    app.get('/logout', function(req, res) {
-        req.logout(() => {
-          console.log('User has logged out!')
+  // PROFILE SECTION - Ensure user is logged in
+  app.get('/tracker', isLoggedIn, function(req, res) {
+    db.collection('throws')
+      .find()
+      .toArray((err, result) => {
+        if (err) return res.status(500).send('Error fetching throws.');
+        res.render('tracker.ejs', {
+          user: req.user,
+          throws: result,
         });
-        res.redirect('/');
+      });
+  });
+
+  // LOGOUT - End session and redirect
+  app.get('/logout', function(req, res) {
+    req.logout(function() {
+      console.log('User has logged out!');
     });
+    res.redirect('/');
+  });
 
-// message board routes ===============================================================
+  // POST route for saving pitch data
+  app.post('/tracker', (req, res) => {
+    const { strikeOrBall, zone, timestamp } = req.body;
+    if (!strikeOrBall || !zone || !timestamp) {
+      return res.status(400).send('Missing pitch data.');
+    }
 
-    app.post('/messages', (req, res) => {
-      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/profile')
-      })
-    })
-
-    app.put('/messages', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-        $set: {
-          thumbUp:req.body.thumbUp + 1
-        }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
-    })
-
-    app.delete('/messages', (req, res) => {
-      db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
-        if (err) return res.send(500, err)
-        res.send('Message deleted!')
-      })
-    })
-
-// =============================================================================
-// AUTHENTICATE (FIRST LOGIN) ==================================================
-// =============================================================================
-
-    // locally --------------------------------
-        // LOGIN ===============================
-        // show the login form
-        app.get('/login', function(req, res) {
-            res.render('login.ejs', { message: req.flash('loginMessage') });
-        });
-
-        // process the login form
-        app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
-
-        // SIGNUP =================================
-        // show the signup form
-        app.get('/signup', function(req, res) {
-            res.render('signup.ejs', { message: req.flash('signupMessage') });
-        });
-
-        // process the signup form
-        app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-        }));
-
-// =============================================================================
-// UNLINK ACCOUNTS =============================================================
-// =============================================================================
-// used to unlink accounts. for social accounts, just remove the token
-// for local account, remove email and password
-// user account will stay active in case they want to reconnect in the future
-
-    // local -----------------------------------
-    app.get('/unlink/local', isLoggedIn, function(req, res) {
-        var user            = req.user;
-        user.local.email    = undefined;
-        user.local.password = undefined;
-        user.save(function(err) {
-            res.redirect('/profile');
-        });
+    db.collection('throws').insertOne({ strikeOrBall, zone, timestamp }, (err, result) => {
+      if (err) return res.status(500).send('Error saving pitch data.');
+      res.redirect('/tracker');
     });
+  });
 
+  // POST route for ending session
+  app.post('/api/end-session', (req, res) => {
+    const { pitchCount, ballCount, strikeCount, timestamp } = req.body;
+    if (!pitchCount || !ballCount || !strikeCount || !timestamp) {
+      return res.status(400).send('Missing required session data.');
+    }
+
+    db.collection('throws').insertOne({ pitchCount, ballCount, strikeCount, timestamp }, (err, result) => {
+      if (err) return res.status(500).send('Error saving session data.');
+      res.status(200).json(result.ops[0]);
+    });
+  });
+
+  // DELETE route to remove specific pitch data
+  app.delete('/tracker', (req, res) => {
+    const { id } = req.body;
+    if (!id) return res.status(400).send('Missing pitch ID.');
+    
+    db.collection('throws').deleteOne({ _id: new require('mongodb').ObjectID(id) }, (err, result) => {
+      if (err) return res.status(500).send('Error deleting pitch data.');
+      res.send('Pitch data deleted!');
+    });
+  });
+
+  // LOGIN - Show login form
+  app.get('/login', function(req, res) {
+    res.render('login.ejs', { message: req.flash('loginMessage') });
+  });
+
+  // Handle login form submission
+  app.post('/login', passport.authenticate('local-login', {
+    successRedirect: '/tracker',
+    failureRedirect: '/login',
+    failureFlash: true,
+  }));
+
+  // SIGNUP - Show signup form
+  app.get('/signup', function(req, res) {
+    res.render('signup.ejs', { message: req.flash('signupMessage') });
+  });
+
+  // Handle signup form submission
+  app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect: '/tracker',
+    failureRedirect: '/signup',
+    failureFlash: true,
+  }));
+
+  // UNLINK ACCOUNT - Unlink local account
+  app.get('/unlink/local', isLoggedIn, function(req, res) {
+    req.user.local.email = undefined;
+    req.user.local.password = undefined;
+    req.user.save(function(err) {
+      res.redirect('/tracker');
+    });
+  });
 };
 
-// route middleware to ensure user is logged in
+// Middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated())
-        return next();
-
-    res.redirect('/');
+  if (req.isAuthenticated()) return next();
+  res.redirect('/');
 }

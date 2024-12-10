@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThrowTrack</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="logo-container">
+        <img src="img/throwtrack-logo.jpg" alt="Throwtrack logo">
+    </div>
+
+    <div class="page-header text-center">
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/tracker" class="btn btn-default btn-sm">Back to Tracker</a>
+    </div>
+
+    <div class="row">
+        <h1>Past Sessions</h1>
+
+        <!-- Table for displaying session data -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Session Name</th>
+                    <th>Pitch Count</th>
+                    <th>Ball Count</th>
+                    <th>Strike Count</th>
+                    <th>Strike Zone Data</th>
+                    <th>Session Ended At</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% sessions.forEach(session => { %>
+                    <tr>
+                        <td><%= session.sessionName %></td>
+                        <td><%= session.pitchCount %></td>
+                        <td><%= session.ballCount %></td>
+                        <td><%= session.strikeCount %></td>
+                        <td><%= JSON.stringify(session.strikezoneData) %></td>
+                        <td><%= session.sessionEndedAt %></td>
+                        <td><%= session.timestamp %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <!-- Add Session Button -->
+        <button class="add-session-button btn btn-primary">Add Session</button>
+
+        <!-- Popup Form for Adding Session -->
+        <div id="add-session-modal" class="modal">
+            <div class="modal-content">
+                <h2>Add a New Session</h2>
+                <form id="add-session-form">
+                    <label for="session-name">Session Name:</label>
+                    <input type="text" id="session-name" required>
+
+                    <label for="session-date">Date:</label>
+                    <input type="date" id="session-date" required>
+
+                    <label for="pitch-count">Pitch Count:</label>
+                    <input type="number" id="pitch-count" required>
+
+                    <label for="strike-count">Strike Count:</label>
+                    <input type="number" id="strike-count" required>
+
+                    <label for="ball-count">Ball Count:</label>
+                    <input type="number" id="ball-count" required>
+
+                    <label for="zone-1-pitch-count">Zone 1:</label>
+                    <input type="number" id="zone-1-pitch-count" required>
+
+                    <label for="zone-2-pitch-count">Zone 2:</label>
+                    <input type="number" id="zone-2-pitch-count" required>
+
+                    <label for="zone-3-pitch-count">Zone 3:</label>
+                    <input type="number" id="zone-3-pitch-count" required>
+                    
+                    <label for="zone-4-pitch-count">Zone 4:</label>
+                    <input type="number" id="zone-4-pitch-count" required>
+
+                    <label for="zone-5-pitch-count">Zone 5:</label>
+                    <input type="number" id="zone-5-pitch-count" required>
+
+                    <label for="zone-6-pitch-count">Zone 6:</label>
+                    <input type="number" id="zone-6-pitch-count" required>
+
+                    <label for="zone-7-pitch-count">Zone 7:</label>
+                    <input type="number" id="zone-7-pitch-count" required>
+
+                    <label for="zone-8-pitch-count">Zone 8:</label>
+                    <input type="number" id="zone-8-pitch-count" required>
+
+                    <label for="zone-9-pitch-count">Zone 9:</label>
+                    <input type="number" id="zone-9-pitch-count" required>
+
+                    <button type="submit" class="btn btn-success">Add Session</button>
+                </form>
+                <button id="close-modal" class="btn btn-danger">Close</button>
+            </div>
+        </div> 
+    </div>
+
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>

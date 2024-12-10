@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <title>ThrowTrack</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+<div class="container">
+
+    <div class="logo-container">
+        <img src="img/throwtrack-logo.jpg" alt="Throwtrack logo">
+    </div>
+
+
+
+    <div class="page-header text-center">
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <!-- Past Sessions Button -->
+        <a href="/pastsession">
+          <button class="past-sessions-button btn-sm">Past Sessions</button>
+        </a>
+    </div>
+
+    <div class="row">
+        <!-- Session Information Form -->
+        <div class="col-sm-6">
+            
+            <form>
+                <div class="session">
+                   
+                    <input type="text" id="session-name"  placeholder="Enter name">
+                </div>
+            </form>
+        </div>
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <!-----------------------------Pitch COUNTER------------------------------------>
+            <div class="counter-container">
+                
+                <h2 id="pitch-count">0</h2>
+                <div class="button-container">
+                  <button class="counter-button">-</button>
+                  <button class="counter-button">+</button>
+                </div>
+                
+            </div>
+
+            <% if (user.local.email) { %>
+            <!-- -------------------------Strike Zone Layout ------------------------------------->
+            <div class="strikezone-container">
+                
+                <div class="strikezone" aria-label="Strike Zone Layout">
+                    <div class="strikezone-row">
+                        <div id="1" class="strikezone-box" tabindex="0" aria-label="Zone 1: 0">1: 0</div>
+                        <div id="4" class="strikezone-box" tabindex="0" aria-label="Zone 4: 0">4: 0</div>
+                        <div id="7" class="strikezone-box" tabindex="0" aria-label="Zone 7: 0">7: 0</div>
+                    </div>
+                    <div class="strikezone-row">
+                        <div id="2" class="strikezone-box" tabindex="0" aria-label="Zone 2: 0">2: 0</div>
+                        <div id="5" class="strikezone-box" tabindex="0" aria-label="Zone 5: 0">5: 0</div>
+                        <div id="8" class="strikezone-box" tabindex="0" aria-label="Zone 8: 0">8: 0</div>
+                    </div>
+                    <div class="strikezone-row">
+                        <div id="3" class="strikezone-box" tabindex="0" aria-label="Zone 3: 0">3: 0</div>
+                        <div id="6" class="strikezone-box" tabindex="0" aria-label="Zone 6: 0">6: 0</div>
+                        <div id="9" class="strikezone-box" tabindex="0" aria-label="Zone 9: 0">9: 0</div>
+                    </div>
+                </div>
+            </div>
+            
+          
+
+            <!-----------------------------Strike Counter------------------------------------>
+            <div class="counter-container">
+                <div class="button-container">
+                    <button class="strike-button">Strike</button>
+                    <span id="strike-count">0</span> <!-- Display the strike count -->
+                </div>
+            </div>
+            <!-----------------------------Ball Counter------------------------------------>           
+            <div class="counter-container">
+                <div class="button-container">
+                    <button class="ball-button">Ball</button>
+                    <span id="ball-count">0</span> <!-- Display the ball count -->
+                </div>
+            </div>
+
+            <!-- ---------------------End Session Button---------------------------------------- -->
+            <div class="end-session-container">
+                <button class="end-session-button"  class="btn btn-primary">End Session/Inning</button>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
+
+
