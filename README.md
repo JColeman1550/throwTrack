@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Installation
 
 1. Clone repo
@@ -11,3 +12,7 @@
 ## Credit
 
 Modified from Scotch.io's auth tutorial
+=======
+# ThrowTrack
+
+>>>>>>> origin/main
