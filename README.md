@@ -44,4 +44,4 @@ To enhance the user experience and provide deeper insights into pitching perform
 
 
 ### URL
-<a href="web-production-6f765.up.railway.app https://web-production-6f765.up.railway.app/">throwtrack.com</a>
+<a href="https://web-production-6f765.up.railway.app/">throwtrack.com</a>
