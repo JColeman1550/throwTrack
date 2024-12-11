@@ -6,6 +6,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  align-items: center;
 }
 
 /* Main container */
@@ -68,11 +69,17 @@ img {
   border: 2px solid black;
   border-radius: 20px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 30px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.counter-button:hover {
+  background-color: black;
+  color: white;
+}
+
 
 .strike-button {
   background-color: white;
@@ -84,6 +91,15 @@ img {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.strike-button:hover {
+  background-color: black;
+  color: white;
+}
+
+#strike-count {
+  font-size: 30px;
 }
 
 .ball-button {
@@ -98,6 +114,15 @@ img {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+#ball-count {
+  font-size: 30px;
+}
+
+.ball-button:hover {
+  background-color: black;
+  color: white;
+}
+
 .end-session-button {
   background-color: white;
   color: black;
@@ -109,6 +134,54 @@ img {
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.end-session-button:hover {
+  background-color: black;
+  color: white;
+}
+
+
+.btn {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: black;
+  color: white;
+}
+
+
+
+
+.past-sessions-button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.past-sessions-button:hover {
+  background-color: black;
+  color: white;
+}
+
+
+
+
+
 
 /* Counter container */
 .counter-container {
@@ -125,6 +198,7 @@ img {
   flex-direction: column;
   align-items: center;
   margin: 20px 0;
+
 }
 
 /* Strikezone layout */
@@ -150,7 +224,8 @@ img {
 }
 
 .strikezone-box:hover {
-  background-color: #f0f0f0;
+  background-color: black;
+  color: white;
 }
 
 /* Button container */
@@ -206,60 +281,63 @@ hr {
   margin: 20px 0;
 }
 
-/* Media queries */
-@media (max-width: 768px) {
-  /* For mobile */
-  .container {
-    padding: 10px;
-    width: 100%;
+/* Mobile styles */
+@media (max-width: 850px) {
+  .row {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
   }
 
-  .jumbotron {
-    padding: 20px 10px;
+  .col-sm-6 {
+      flex: 1;
+      width: 100%;
   }
 
-  img {
-    max-width: 150px;
+  .page-header {
+      flex-direction: column;
+      gap: 10px;
   }
 
-  .button {
-    font-size: 14px;
-    padding: 8px 15px;
-    width: 80%; /* Center and make buttons larger */
+  .strikezone {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
   }
 
-  .counter-container,
-  .strikezone-container {
-    margin: 10px 0;
-    width: 100%;
+  .strikezone-box {
+      font-size: 14px;
+      padding: 15px;
   }
 
   .button-container {
-    width: 100%;
+      flex-direction: column;
+      align-items: stretch;
   }
 
-  h1 {
-    font-size: 24px; /* Adjust heading size */
+  .counter-button, .strike-button, .ball-button {
+      font-size: 16px;
+      padding: 10px;
   }
 
-  #session-name {
-    font-size: 14px;
+  .end-session-button {
+      width: 100%;
   }
 }
 
-@media (min-width: 769px) {
-  /* For desktop */
-  .button-container,
-  .counter-container,
-  .strikezone-container {
-    width: 90%;
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1440px) {
+  .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
   }
 
-  .button {
-    width: auto; /* Restore button width */
+  .col-sm-6 {
+      flex: 1;
+      min-width: 50%;
   }
 
-  h1 {
-    font-size: 28px;
+  .page-header {
+      justify-content: space-between;
   }
 }
