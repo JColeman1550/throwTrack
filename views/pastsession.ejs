@@ -17,10 +17,11 @@
         <a href="/strikezonedata" class="btn btn-default btn-sm">Zone Distribution</a>
     </div>
 
+<!--------------------------------------------------PAST SESSIONS----------------------------------------------->
     <div class="row">
         <h1>Past Sessions</h1>
 
-        <!-- Make the table responsive -->
+        <!---RESPONSIVE TABLE -->
         <div class="table-responsive small-table">
             <table class="table table-striped">
                 <thead>
@@ -31,10 +32,12 @@
                         <th>Strike Count</th>
                         <!-- <th>Strike Zone Data</th>
                         <th>Session Ended At</th>
-                        <th>Timestamp</th> -->
+                        <th>Timestamp</th> -->    
                     </tr>
                 </thead>
                 <tbody>
+                    
+        <!---DISPLAYS SESSION DATA--->                   
                     <% sessions.forEach(session => { %>
                         <tr>
                             <td><%= session.sessionName %></td>

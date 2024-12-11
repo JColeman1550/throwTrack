@@ -10,22 +10,20 @@
     
 <div class="container">
 
-    <!-- <div class="logo-container">
-        <img src="img/throwtrack-logo.jpg" alt="Throwtrack logo">
-    </div> -->
+
 
 
 
     <div class="page-header text-center">
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-        <!-- Past Sessions Button -->
+<!-- --------------------------PAST SESSIONS BUTTON----------------------------------------------------------->
         <a href="/pastsession">
           <button class="past-sessions-button btn-sm">Past Sessions</button>
         </a>
     </div>
 
     <div class="row">
-        <!-- Session Information Form -->
+<!--------------------------------SESSION INFO FORM----------------------------------------------------------->
         <div class="col-sm-6">
             
             <form>
@@ -38,7 +36,7 @@
 
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
-            <!-----------------------------Pitch COUNTER------------------------------------>
+<!-----------------------------PITCH COUNTER------------------------------------------------------------------>
             <div class="counter-container">
                 
                 <h2 id="pitch-count">0</h2>
@@ -50,7 +48,7 @@
             </div>
 
             <% if (user.local.email) { %>
-            <!-- -------------------------Strike Zone Layout ------------------------------------->
+<!-- -------------------------STRIKEZONE LAYOUT---------------------------------------------------------------->
             <div class="strikezone-container">
                 
                 <div class="strikezone" aria-label="Strike Zone Layout">
@@ -74,14 +72,14 @@
             
           
 
-            <!-----------------------------Strike Counter------------------------------------>
+<!-----------------------------STRIKE COUNTER------------------------------------------------------------------->
             <div class="counter-container">
                 <div class="button-container">
                     <button class="strike-button">Strike</button>
-                    <span id="strike-count">0</span> <!-- Display the strike count -->
+                    <span id="strike-count">0</span> <!-- displays strike count -->
                 </div>
             </div>
-            <!-----------------------------Ball Counter------------------------------------>           
+<!-----------------------------BALL COUNTER--------------------------------------------------------------------->           
             <div class="counter-container">
                 <div class="button-container">
                     <button class="ball-button">Ball</button>
@@ -89,7 +87,7 @@
                 </div>
             </div>
 
-            <!-- ---------------------End Session Button---------------------------------------- -->
+<!-----------------------END SESSION BUTTON--------------------------------------------------------------------->
             <div class="end-session-container">
                 <button class="end-session-button"  class="btn btn-primary">End Session/Inning</button>
             </div>

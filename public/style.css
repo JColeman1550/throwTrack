@@ -1,4 +1,4 @@
-/* General styles for the page */
+/* general */
 body {
   font-family: 'Roboto', Arial, sans-serif;
   background-color: white;
@@ -14,7 +14,7 @@ body {
   text-align: left;
 }
 
-/* Main container */
+/* main container */
 .container {
   /* display: flex; */
   /* flex-direction: column; */
@@ -24,7 +24,7 @@ body {
   padding: 20px;
 }
 
-/* Image styling */
+/* img */
 img {
   max-width: 200px;
   height: auto;
@@ -32,7 +32,7 @@ img {
   border-radius: 8px;
 }
 
-/* Jumbotron container */
+/* jumbotron */
 .jumbotron {
   background-color: white;
   border: none;
@@ -41,7 +41,7 @@ img {
   text-align: center;
 }
 
-/* Jumbotron image */
+/* jumbotron img */
 .jumbotron img {
   max-width: 200px;
   height: auto;
@@ -49,7 +49,7 @@ img {
   border-radius: 8px;
 }
 
-/* Base button styling */
+/* basic button styling */
 .button {
   background-color: white;
   color: black;
@@ -72,7 +72,7 @@ img {
   color: white;
 }
 
-/* Specific button types */
+/* specific buttons */
 .counter-button {
   background-color: white;
   color: black;
@@ -193,7 +193,7 @@ img {
 
 
 
-/* Counter container */
+/* container for counters */
 .counter-container {
   display: flex;
   flex-direction: column;
@@ -202,7 +202,7 @@ img {
   width: 90%;
 }
 
-/* Strikezone container */
+/* strikezone container */
 .strikezone-container {
   display: flex;
   flex-direction: column;
@@ -211,7 +211,7 @@ img {
 
 }
 
-/* Strikezone layout */
+/* strikezone layout */
 .strikezone-row {
   display: flex;
   justify-content: center;
@@ -238,7 +238,7 @@ img {
   color: white;
 }
 
-/* Button container */
+/* containers for buttons */
 .button-container {
   display: flex;
   justify-content: center;
@@ -247,14 +247,14 @@ img {
   width: 90%;
 }
 
-/* Headings */
+/* headings */
 h1 {
   font-size: 28px;
   margin-bottom: 20px;
   color: #000000;
 }
 
-/* Session info container */
+/* session info container */
 .session-info-container {
   width: 90%;
   padding: 10px;
@@ -264,7 +264,7 @@ h1 {
   margin: 10px auto;
 }
 
-/* Input field */
+/* input field */
 #session-name {
   width: 100%;
   padding: 10px;
@@ -272,7 +272,7 @@ h1 {
   border: 1px solid black;
 }
 
-/* Link styling */
+/* links */
 a {
   color: red;
   text-decoration: none;
@@ -283,7 +283,7 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Horizontal rule */
+/* horizontal rule*/
 hr {
   border: 0;
   height: 1px;
@@ -293,10 +293,10 @@ hr {
 
 
 th, td {
-  white-space: nowrap; /* Prevent text wrapping in cells */
+  white-space: nowrap; 
 }
 .modal {
-  display: none; /* Initially hide the modal */
+  display: none; 
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -369,7 +369,7 @@ th, td {
 
 
   .modal-content {
-    width: 90%; /* Reduce width for smaller devices */
+    width: 90%; 
 }
 
 
@@ -378,19 +378,19 @@ th, td {
   text-align: left;
 }
 .table-responsive {
-  overflow-x: auto; /* Enable horizontal scrolling */
-  width: 100%; /* Ensure the container takes full width */
+  overflow-x: auto; /* enables horizontal scrolling */
+  width: 100%; 
 }
 
 .table {
-  font-size: 0.4rem; /* Reduce table font size */
-  width: 100%; /* Ensure table fits the container */
+  font-size: 0.4rem; /* reduces table font size */
+  width: 100%; /* ensures table fits the container */
 }
 
 th, td {
-  padding: 5px; /* Reduce padding inside table cells */
-  text-align: center; /* Center-align content */
-  white-space: nowrap; /* Prevent text wrapping */
+  padding: 5px; 
+  text-align: center; 
+  white-space: nowrap; 
 }
 
 
@@ -404,7 +404,7 @@ th, td {
 /* iPad */
 @media (max-width: 768px) and (max-width: 1024px){
   
-  /* Jumbotron container */
+  /* jumbotron container */
 .jumbotron {
   background-color: white;
   border-radius: 5px;
@@ -412,7 +412,7 @@ th, td {
   text-align: center;
 }
   
-  /* Main container */
+  /* main container */
 .container {
   display: flex;
   flex-direction: column;
@@ -473,10 +473,10 @@ th, td {
 
 
   .modal-content {
-    width: 100%; /* Reduce width for smaller devices */
+    width: 100%; 
 }
 th, td, tr {
-    font-size: 2.5rem; /* Adjust font size for smaller screens */
+    font-size: 2.5rem; 
 }
 
 
@@ -506,10 +506,10 @@ th, td, tr {
 
 
   .modal-content {
-    width: 100%; /* Reduce width for smaller devices */
+    width: 100%; 
 }
 th, td, tr {
-    font-size: 3rem; /* Adjust font size for smaller screens */
+    font-size: 3rem; 
 }
 
 h1 {

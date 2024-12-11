@@ -1,4 +1,3 @@
-// Select the pitch count display
 const pitchCountDisplay = document.querySelector("#pitch-count");
 const ballBtn = document.querySelectorAll(".ball-button");
 const ballCountDisplay = document.querySelector("#ball-count");
@@ -6,37 +5,37 @@ const strikeBtn = document.querySelectorAll(".strike-button");
 const strikeCountDisplay = document.querySelector("#strike-count");
 
 
-// Initialize counts
+// INITIALIZE COUNTS
 let pitchCount = 0;
 let ballCount = 0;
 let strikeCount = 0;
 
 ////////////////////////////////PITCH COUNTER/////////////////////////////////////////////////////////////////////
-// Select the counter buttons
+// selecting counter buttons
 const counterButtons = document.querySelectorAll(".counter-button");
 
-// Add event listeners to the buttons
+// adding event listeners to buttons
 counterButtons.forEach((button) => {
   button.addEventListener("click", function () {
     if (this.textContent === "+") {
-      pitchCount += 1; // Increment
+      pitchCount += 1; // increment pitch count by 1
       console.log("add clicked: Pitch count:", pitchCount);
     } else if (this.textContent === "-" && pitchCount > 0) {
-      pitchCount -= 1; // Decrement, with minimum of 0
+      pitchCount -= 1; // decrement pitch count by 1, cant go past 0
       console.log("minus clicked: Pitch count:", pitchCount);
     }
-    pitchCountDisplay.textContent = pitchCount; // Update the display
+    pitchCountDisplay.textContent = pitchCount; // updates display
   });
 });
 
 ///////////////////////////////////////BALL COUNTER/////////////////////////////////////////////////////////////////////////////
 
-// Add event listeners to the buttons
+// event listeners
 ballBtn.forEach((button) => {
   button.addEventListener("click", function () {
     if (this.textContent === "Ball") {
-      ballCount += 1; // Increment
-      ballCountDisplay.textContent = ballCount; // Update the display
+      ballCount += 1; // + increment
+      ballCountDisplay.textContent = ballCount; // update display
       console.log("ball clicked: Ball count:", ballCount);
     }
   });
@@ -44,29 +43,29 @@ ballBtn.forEach((button) => {
 
 ////////////////////////////////////////STRIKE COUNTER////////////////////////////////////////////////////////////////////////////
 
-// Add event listeners to the buttons
+
 strikeBtn.forEach((button) => {
   button.addEventListener("click", function () {
     if (this.textContent === "Strike") {
-      strikeCount += 1; // Increment
-      strikeCountDisplay.textContent = strikeCount; // Update the display
+      strikeCount += 1;
+      strikeCountDisplay.textContent = strikeCount;
       console.log("strike clicked: Strike count:", strikeCount);
     }
   });
 });
 
 ///////////////////////////////////STRIKEZONE///////////////////////////////////////////////////////////////////////
-// Handle strike zone clicks
+// handles clicks in boxes
 const strikezoneBoxes = document.querySelectorAll(".strikezone-box");
 strikezoneBoxes.forEach((box) => {
   box.addEventListener("click", function () {
-    // Increment the pitch count for this zone
+    // increment pitch count in zone
     let currentPitches = parseInt(this.textContent.split(": ")[1]) || 0;
     this.textContent = `${this.id}: ${currentPitches + 1}`;
-    
-    // Update the display for the clicked zone
+
+    // updates display with h3 span from tracker.ejs
     const zoneClickedDisplay = document.querySelector("h3 span");
-    zoneClickedDisplay.textContent = this.id; // Update the zone number in the span
+    zoneClickedDisplay.textContent = this.id; // updates zone number
 
     console.log("zone clicked. Zone:", this.id, "Current pitches:", currentPitches + 1);
   });
@@ -75,20 +74,19 @@ strikezoneBoxes.forEach((box) => {
 /////////////////////////////////END SESSION////////////////////////////////////////////////////////////////////
 
 
-// Handle End Session/Inning
 const endSessionButtons = document.querySelectorAll(".end-session-button");
 
 endSessionButtons.forEach((button) => {
   button.addEventListener("click", function () {
-    // Collect data to send in the POST request
+    // collecting data to send in POST request
     const strikezoneData = {};
     const strikezoneBoxes = document.querySelectorAll(".strikezone-box");
     const sessionName = document.querySelector("#session-name").value;
 
     strikezoneBoxes.forEach((box) => {
-      const zoneNumber = box.id; // Get the zone number from the box's id
-      const count = box.textContent.split(": ")[1]; // Extract the count value
-      strikezoneData[zoneNumber] = parseInt(count, 10); // Store in the object as a key-value pair
+      const zoneNumber = box.id; // gets zone number from box's id
+      const count = box.textContent.split(": ")[1]; // extracts count value
+      strikezoneData[zoneNumber] = parseInt(count, 10); // stores obj in key value pair
     });
 
     const sessionData = {
@@ -97,10 +95,10 @@ endSessionButtons.forEach((button) => {
       ballCount,
       strikeCount,
       strikezoneData,
-      sessionEndedAt: new Date().toISOString(), // Timestamp for session ending
+      sessionEndedAt: new Date().toISOString(), // gives timestamp for when the session ended
     };
 
-    // Make the POST request
+////////////////////////////////////////POST REQUEST////////////////////////////////////////////////////////////
     fetch("/pastsession", {
       method: "POST",
       headers: {
@@ -121,26 +119,26 @@ endSessionButtons.forEach((button) => {
         console.error("Error saving session data:", error);
       });
 
-    // Reset all strike zone boxes to initial state
+/////////////////////////// RESET STRIKEZONE VALUES TO INITIAL COUNT////////////////////////////////////////////////////
     strikezoneBoxes.forEach((box) => {
-      const zoneNumber = box.id; // Get the zone number from the box's id
-      box.textContent = `${zoneNumber}: 0`; // Reset the text content
-      box.setAttribute("aria-label", `Zone ${zoneNumber}: 0`); // Update the aria-label for accessibility
+      const zoneNumber = box.id; // 
+      box.textContent = `${zoneNumber}: 0`; 
+      box.setAttribute("aria-label", `Zone ${zoneNumber}: 0`); 
     });
 
-    // Reset the pitch, ball, and strike counters
+    // resets these counters
     pitchCount = 0;
     ballCount = 0;
     strikeCount = 0;
 
-    // Update the displays
+    // updates displays
     pitchCountDisplay.textContent = pitchCount;
     ballCountDisplay.textContent = ballCount;
     strikeCountDisplay.textContent = strikeCount;
 
-    // Reset the zone clicked display
+    // resets zone display
     const zoneClickedDisplay = document.querySelector("h3 span");
-    zoneClickedDisplay.textContent = ""; // Clear the displayed zone
+    zoneClickedDisplay.textContent = ""; // clears displayed zone
 
     console.log("Session ended. All counters reset.");
   });
@@ -150,103 +148,103 @@ endSessionButtons.forEach((button) => {
 
 ///////////////////////////////////////EDIT SESSION BUTTON/////////////////////////////////////////////////////////////////////////////
 
-// Add event listeners to the buttons
-const editBtn = document.querySelectorAll(".edit-session-button");
-editBtn.forEach((button) => {
-  button.addEventListener("click", function () {
-    // Check which button was clicked and update the corresponding count
-    if (this.textContent === "Ball") {
-      ballCount += 1; // Increment ball count
-      ballCountDisplay.textContent = ballCount; // Update the ball count display
-      console.log("Ball clicked: Ball count:", ballCount);
-    } else if (this.textContent === "Strike") {
-      strikeCount += 1; // Increment strike count
-      strikeCountDisplay.textContent = strikeCount; // Update the strike count display
-      console.log("Strike clicked: Strike count:", strikeCount);
-    } else if (this.textContent === "Pitch") {
-      pitchCount += 1; // Increment pitch count
-      pitchCountDisplay.textContent = pitchCount; // Update the pitch count display
-      console.log("Pitch clicked: Pitch count:", pitchCount);
-    }
-  });
-});
+// // Add event listeners to the buttons
+// const editBtn = document.querySelectorAll(".edit-session-button");
+// editBtn.forEach((button) => {
+//   button.addEventListener("click", function () {
+//     // Check which button was clicked and update the corresponding count
+//     if (this.textContent === "Ball") {
+//       ballCount += 1; // Increment ball count
+//       ballCountDisplay.textContent = ballCount; // Update the ball count display
+//       console.log("Ball clicked: Ball count:", ballCount);
+//     } else if (this.textContent === "Strike") {
+//       strikeCount += 1; // Increment strike count
+//       strikeCountDisplay.textContent = strikeCount; // Update the strike count display
+//       console.log("Strike clicked: Strike count:", strikeCount);
+//     } else if (this.textContent === "Pitch") {
+//       pitchCount += 1; // Increment pitch count
+//       pitchCountDisplay.textContent = pitchCount; // Update the pitch count display
+//       console.log("Pitch clicked: Pitch count:", pitchCount);
+//     }
+//   });
+// });
 
 ///////////////////////////////////////ADD SESSION BUTTON/////////////////////////////////////////////////////////////////////////////
 
-// Select the Add Session Button and Modal
-const addSessionButton = document.querySelector(".add-session-button");
-const modal = document.getElementById("add-session-modal");
-const closeModalButton = document.getElementById("close-modal");
-const addSessionForm = document.getElementById("add-session-form");
+// // Select the Add Session Button and Modal
+// const addSessionButton = document.querySelector(".add-session-button");
+// const modal = document.getElementById("add-session-modal");
+// const closeModalButton = document.getElementById("close-modal");
+// const addSessionForm = document.getElementById("add-session-form");
 
-// Open modal when Add Session button is clicked
-addSessionButton?.addEventListener("click", () => {
-  modal.style.display = "block";
-});
+// // Open modal when Add Session button is clicked
+// addSessionButton?.addEventListener("click", () => {
+//   modal.style.display = "block";
+// });
 
-// Close modal when Close button is clicked
-closeModalButton?.addEventListener("click", () => {
-  modal.style.display = "none";
-});
+// // Close modal when Close button is clicked
+// closeModalButton?.addEventListener("click", () => {
+//   modal.style.display = "none";
+// });
 
-// Handle form submission to add a session
-addSessionForm?.addEventListener("submit", (event) => {
-  event.preventDefault();
+// // Handle form submission to add a session
+// addSessionForm?.addEventListener("submit", (event) => {
+//   event.preventDefault();
 
-  // Get the form data
-  const sessionName = document.getElementById("session-name").value;
-  const sessionDate = document.getElementById("session-date").value;
-  const pitchCount = document.getElementById("pitch-count").value || 0 ;
-  const strikeCount = document.getElementById("strike-count").value;
-  const ballCount = document.getElementById("ball-count").value;
+//   // Get the form data
+//   const sessionName = document.getElementById("session-name").value;
+//   const sessionDate = document.getElementById("session-date").value;
+//   const pitchCount = document.getElementById("pitch-count").value || 0;
+//   const strikeCount = document.getElementById("strike-count").value;
+//   const ballCount = document.getElementById("ball-count").value;
 
-  // Log the session data 
-  console.log("New Session Added:", {
-    sessionName,
-    sessionDate,
-    pitchCount,
-    strikeCount,
-    ballCount,
-  });
+//   // Log the session data 
+//   console.log("New Session Added:", {
+//     sessionName,
+//     sessionDate,
+//     pitchCount,
+//     strikeCount,
+//     ballCount,
+//   });
 
-  // Send data to the server (POST request)
-  fetch('throws', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      sessionName,
-      sessionDate,
-      pitchCount,
-      strikeCount,
-      ballCount
-    }),
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Session added to database:', data);
-    })
-    .catch(error => {
-      console.error('Error adding session:', error);
-    });
+//   // Send data to the server (POST request)
+//   fetch('throws', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       sessionName,
+//       sessionDate,
+//       pitchCount,
+//       strikeCount,
+//       ballCount
+//     }),
+//   })
+//     .then(response => response.json())
+//     .then(data => {
+//       console.log('Session added to database:', data);
+//     })
+//     .catch(error => {
+//       console.error('Error adding session:', error);
+//     });
 
-  // Clear the form after submission
-  addSessionForm.reset();
+//   // Clear the form after submission
+//   addSessionForm.reset();
 
-  // Close the modal after submission
-  modal.style.display = "none";
+//   // Close the modal after submission
+//   modal.style.display = "none";
 
-  // Display a success message or update the UI with the new session
-  alert("Session added successfully!");
-});
+//   // Display a success message or update the UI with the new session
+//   alert("Session added successfully!");
+// });
 
 //////////////////////////////////////////ARRAY TO STORE SINGLE PITCH DATA///////////////////////////////////////////////////////////////////////////////////
 
-const sessionPitches = []; // Array to hold the session's pitch data
-let selectedZone = null; // Variable to store the selected zone
+const sessionPitches = []; // sets array to hold session data
+let selectedZone = null; // var to store selected zone
 
-// Add event listeners to the strikezone boxes
+
 document.querySelectorAll('.strikezone-box').forEach((box) => {
   box.addEventListener('click', (event) => {
     selectedZone = event.target.id; // Capture the id of the clicked zone
@@ -254,11 +252,10 @@ document.querySelectorAll('.strikezone-box').forEach((box) => {
   });
 });
 
-// Add event listeners for the strike/ball buttons
 document.querySelectorAll('.strike-button').forEach((btn) => {
   btn.addEventListener('click', () => {
     if (selectedZone) {
-      addPitch('strike', selectedZone); // Add pitch with selected zone
+      addPitch('strike', selectedZone); // adds pitch of selected zone
     } else {
       console.log('Please select a zone first!');
     }
@@ -268,23 +265,23 @@ document.querySelectorAll('.strike-button').forEach((btn) => {
 document.querySelectorAll('.ball-button').forEach((btn) => {
   btn.addEventListener('click', () => {
     if (selectedZone) {
-      addPitch('ball', selectedZone); // Add pitch with selected zone
+      addPitch('ball', selectedZone); 
     } else {
       console.log('Please select a zone first!');
     }
   });
 });
 
-// Function to add a pitch to the sessionPitches array
+// func to add a pitch to the sessionPitches array
 function addPitch(strikeOrBall, zone) {
   const sessionName = document.getElementById("session-name").value || "Unnamed Session";
   const pitch = {
     sessionName: sessionName,
     strikeOrBall: strikeOrBall,
     zone: zone,
-    timestamp: new Date() // timestamp for each pitch
+    timestamp: new Date() 
   };
   sessionPitches.push(pitch);
-  console.log(sessionPitches); 
+  console.log(sessionPitches);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////
+

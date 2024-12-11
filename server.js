@@ -1,6 +1,4 @@
-// server.js
-
-// set up ======================================================================
+////////////////////////////////////////SET UP//////////////////////////////////////////////////////////////////
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
@@ -15,7 +13,7 @@ const session = require('express-session');
 
 const configDB = require('./config/database.js');
 
-// configuration ===============================================================
+///////////////////////////////////CONFIGURATION///////////////////////////////////////////////////////////////////
 mongoose.connect(configDB.url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('MongoDB connected successfully');
@@ -25,14 +23,17 @@ mongoose.connect(configDB.url, { useNewUrlParser: true, useUnifiedTopology: true
     console.error('MongoDB connection error:', err);
   });
 
-// set up Express application
+///////////////////////////////////EXPRESS APP SETUP//////////////////////////////////////////////////////////////
 app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(express.static('public'));
 
-// Passport configuration =====================================================
+///////////////////////////////PASSPORT CONFIGURATION (SECURITY)////////////////////////////////////////////////
+
+// ensure users only see their data
+
 require('./config/passport')(passport); // pass passport for configuration
 
 // required for passport
@@ -47,13 +48,14 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
-// API routes =================================================================
 
-// Add a new throw session to the database
+///////////////////////////////////////////API ROUTES///////////////////////////////////////////////////////////
+
+//POST adding new session to DB
 app.post('/sessions', (req, res) => {
   const { sessionName, sessionDate, pitchCount, strikeCount, ballCount } = req.body;
 
-  // Ensure all required fields are present
+// required fields
   if (!sessionName || !sessionDate || !pitchCount || !strikeCount || !ballCount) {
     return res.status(400).json({ message: 'All fields are required' });
   }
@@ -74,43 +76,34 @@ app.post('/sessions', (req, res) => {
     res.status(201).json({ message: 'Session saved successfully', id: result.insertedId });
   });
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
-
-// GET route to fetch session data from the database
+// GET fetch session data from DB
 app.get('/pastsession', (req, res) => {
   mongoose.connection.db.collection('sessions').find().toArray((err, sessions) => {
     if (err) {
       console.error('Error fetching session data:', err);
       return res.status(500).send('Error fetching session data');
     }
-    res.render('pastsession', { sessions });  // Pass the session data to the EJS page
+    res.render('pastsession', { sessions });  // passes session to ejs page
   });
 });
 
 
-// GET route to fetch session data from the database
 app.get('/strikezonedata', (req, res) => {
   mongoose.connection.db.collection('sessions').find().toArray((err, sessions) => {
     if (err) {
       console.error('Error fetching session data:', err);
       return res.status(500).send('Error fetching session data');
     }
-    res.render('strikezonedata', { sessions });  // Pass the session data to the EJS page
+    res.render('strikezonedata', { sessions }); 
   });
 });
+////////////////////////////////////////////////////////////////////////////////////////////////
 
+// PUT REQUEST
 
-
-
-
-// Increment pitch count
+// increments pitch count
 app.put('/countUp', (req, res) => {
   mongoose.connection.db.collection('throws')
     .findOneAndUpdate(
@@ -124,7 +117,7 @@ app.put('/countUp', (req, res) => {
     );
 });
 
-// Decrement pitch count
+// decrements pitch count
 app.put('/countDown', (req, res) => {
   mongoose.connection.db.collection('throws')
     .findOneAndUpdate(
@@ -138,7 +131,7 @@ app.put('/countDown', (req, res) => {
     );
 });
 
-// Delete a throw entry
+// deletes entry
 app.delete('/messages', (req, res) => {
   mongoose.connection.db.collection('throws').findOneAndDelete(
     { name: req.body.name, msg: req.body.msg },
@@ -148,17 +141,17 @@ app.delete('/messages', (req, res) => {
     }
   );
 });
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// New route to handle past session data (from frontend)
+// new route to handle past session data (from frontend)
 app.post('/pastsession', (req, res) => {
   const { sessionName,pitchCount, ballCount, strikeCount, strikezoneData, sessionEndedAt } = req.body;
 
-  // Ensure necessary fields are provided
   if (sessionName === undefined||pitchCount === undefined || ballCount === undefined || strikeCount === undefined || !strikezoneData) {
     return res.status(400).json({ message: 'Pitch count, ball count, strike count, and strike zone data are required' });
   }
 
-  // Insert session data into 'sessions' collection
+  // puts session data into 'sessions' collection
   mongoose.connection.db.collection('sessions').insertOne({
     sessionName,
     pitchCount,
@@ -166,7 +159,7 @@ app.post('/pastsession', (req, res) => {
     strikeCount,
     strikezoneData,
     sessionEndedAt,
-    timestamp: new Date()  // Add timestamp for session end
+    timestamp: new Date()  
   }, (err, result) => {
     if (err) {
       console.error('Error adding session data:', err);
@@ -177,7 +170,7 @@ app.post('/pastsession', (req, res) => {
 });
 
 
-// Launch ======================================================================
+////////////////////////////////////////LAUNCH/////////////////////////////////////////////////////////////////
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
