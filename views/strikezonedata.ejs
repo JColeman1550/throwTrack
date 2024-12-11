@@ -26,24 +26,18 @@
                 <thead>
                     <tr>
                         <th>Session Name</th>
-                        <th>Pitch Count</th>
-                        <th>Ball Count</th>
-                        <th>Strike Count</th>
-                        <!-- <th>Strike Zone Data</th>
-                        <th>Session Ended At</th>
-                        <th>Timestamp</th> -->
+                       
+                        <th>Strike Zone Data</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <% sessions.forEach(session => { %>
                         <tr>
                             <td><%= session.sessionName %></td>
-                            <td><%= session.pitchCount %></td>
-                            <td><%= session.ballCount %></td>
-                            <td><%= session.strikeCount %></td>
-                            <!-- <td><%= JSON.stringify(session.strikezoneData) %></td>
-                            <td><%= session.sessionEndedAt %></td>
-                            <td><%= session.timestamp %></td> -->
+                    
+                            <td><%= JSON.stringify(session.strikezoneData) %></td>
+                            
                         </tr>
                     <% }); %>
                 </tbody>

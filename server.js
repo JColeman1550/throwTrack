@@ -94,6 +94,22 @@ app.get('/pastsession', (req, res) => {
   });
 });
 
+
+// GET route to fetch session data from the database
+app.get('/strikezonedata', (req, res) => {
+  mongoose.connection.db.collection('sessions').find().toArray((err, sessions) => {
+    if (err) {
+      console.error('Error fetching session data:', err);
+      return res.status(500).send('Error fetching session data');
+    }
+    res.render('strikezonedata', { sessions });  // Pass the session data to the EJS page
+  });
+});
+
+
+
+
+
 // Increment pitch count
 app.put('/countUp', (req, res) => {
   mongoose.connection.db.collection('throws')
