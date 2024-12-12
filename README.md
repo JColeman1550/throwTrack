@@ -2,6 +2,10 @@
 
 ThrowTrack is a web-based application designed for tracking pitching sessions, specifically for baseball pitchers. It allows users to monitor their pitch count, ball/strike count, and the number of pitches thrown in different strike zones during each session. The application is built with **HTML**, **CSS**, and **JavaScript** for the front-end, and **EJS** templating to render dynamic content from a Node.js server.
 
+## Why ThrowTrack?
+
+ThrowTrack was created to help address the growing concern of overuse injuries in youth baseball pitchers. By providing a tool that allows coaches and parents to monitor pitch counts and performance data, ThrowTrack empowers them to make informed decisions about a pitcher's workload and ensure their long-term health and safety. With easy-to-use tracking features, ThrowTrack aims to foster a culture of responsible pitching management at the youth level.
+
 ## Features
 
 - **Pitch Count**: Increment or decrement the pitch count with + or - buttons.
@@ -50,13 +54,12 @@ To enhance the user experience and provide deeper insights into pitching perform
    - A heat map or bar chart to display the frequency of pitches landing in each of the 14 strike zones.
    - Provides a clear visualization of pitching precision and control.
 
-#### Implementation Details:
+#### Implementation Plans:
 
 - **Chart.js**: This library will be used to create interactive and visually appealing charts such as line graphs, pie charts, and bar graphs.
 - **Historical Data Storage**: A database (e.g., MongoDB) will store session data, enabling detailed analysis and visualization of trends over time.
 - **D3.js**: For more dynamic and advanced visualizations like heat maps, showcasing strike zone distribution.
 
-These features aim to provide actionable insights, helping pitchers track progress and refine their skills effectively.
 
 ## Installation
 
