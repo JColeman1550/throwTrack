@@ -29,10 +29,7 @@
                         <th>Session Name</th>
                         <th>Pitch Count</th>
                         <th>Ball Count</th>
-                        <th>Strike Count</th>
-                        <!-- <th>Strike Zone Data</th>
-                        <th>Session Ended At</th>
-                        <th>Timestamp</th> -->    
+                        <th>Strike Count</th>  
                     </tr>
                 </thead>
                 <tbody>
@@ -44,14 +41,52 @@
                             <td><%= session.pitchCount %></td>
                             <td><%= session.ballCount %></td>
                             <td><%= session.strikeCount %></td>
-                            <!-- <td><%= JSON.stringify(session.strikezoneData) %></td>
-                            <td><%= session.sessionEndedAt %></td>
-                            <td><%= session.timestamp %></td> -->
+                            <td>
+                                <i class="fa fa-trash-o delete-session" 
+                                data-id="<%= session._id %>" 
+                                data-sessionName="<%= session.sessionName %>"
+                                data-pitchCount="<%= session.pitchCount %>"
+                                data-ballCount="<%= session.ballCount %>"
+                                data-strikeCount="<%= session.strikeCount %>"
+                                aria-hidden="true" 
+                                style="cursor: pointer; color: red;"></i>
+                               
+                                <i class="fa fa-edit edit-session"
+                                data-id="<%= session._id %>" 
+                                data-sessionName="<%= session.sessionName %>"
+                                data-pitchCount="<%= session.pitchCount %>"
+                                data-ballCount="<%= session.ballCount %>"
+                                data-strikeCount="<%= session.strikeCount %>"
+                                aria-hidden="true" 
+                                style="cursor: pointer; color: blue;"></i>
+                            </td>
                         </tr>
                     <% }); %>
                 </tbody>
             </table>
         </div>
+
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Edit Session</h2>
+              <form id="editForm">
+                <input type="hidden" id="editSessionId">
+                <label for="editSessionName">Session Name:</label>
+                <input type="text" id="editSessionName" name="sessionName"><br>
+                <label for="editPitchCount">Pitch Count:</label>
+                <input type="number" id="editPitchCount" name="pitchCount"><br>
+                <label for="editBallCount">Ball Count:</label>
+                <input type="number" id="editBallCount" name="ballCount"><br>
+                <label for="editStrikeCount">Strike Count:</label>
+                <input type="number" id="editStrikeCount" name="strikeCount"><br>
+                <button type="submit">Save</button>
+              </form>
+            </div>
+          </div>
+
+
+
 
         
     </div>

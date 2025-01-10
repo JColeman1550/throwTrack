@@ -5,6 +5,7 @@ const strikeBtn = document.querySelectorAll(".strike-button");
 const strikeCountDisplay = document.querySelector("#strike-count");
 
 
+
 // INITIALIZE COUNTS
 let pitchCount = 0;
 let ballCount = 0;
@@ -146,28 +147,7 @@ endSessionButtons.forEach((button) => {
 
 
 
-///////////////////////////////////////EDIT SESSION BUTTON/////////////////////////////////////////////////////////////////////////////
 
-// // Add event listeners to the buttons
-// const editBtn = document.querySelectorAll(".edit-session-button");
-// editBtn.forEach((button) => {
-//   button.addEventListener("click", function () {
-//     // Check which button was clicked and update the corresponding count
-//     if (this.textContent === "Ball") {
-//       ballCount += 1; // Increment ball count
-//       ballCountDisplay.textContent = ballCount; // Update the ball count display
-//       console.log("Ball clicked: Ball count:", ballCount);
-//     } else if (this.textContent === "Strike") {
-//       strikeCount += 1; // Increment strike count
-//       strikeCountDisplay.textContent = strikeCount; // Update the strike count display
-//       console.log("Strike clicked: Strike count:", strikeCount);
-//     } else if (this.textContent === "Pitch") {
-//       pitchCount += 1; // Increment pitch count
-//       pitchCountDisplay.textContent = pitchCount; // Update the pitch count display
-//       console.log("Pitch clicked: Pitch count:", pitchCount);
-//     }
-//   });
-// });
 
 ///////////////////////////////////////ADD SESSION BUTTON/////////////////////////////////////////////////////////////////////////////
 
@@ -284,4 +264,196 @@ function addPitch(strikeOrBall, zone) {
   sessionPitches.push(pitch);
   console.log(sessionPitches);
 }
+console.log("main.js");
+var trash = document.querySelectorAll(".fa-trash-o");
 
+//////////////////////////////////////DELETE SESSION////////////////////////////////////////////////////////////////
+(trash).forEach((element) =>  {
+  console.log("trash listener")
+  element.addEventListener('click', () => {
+ 
+     const id= element.getAttribute('data-id')
+    console.log(id);
+
+    // Send DELETE request to the server
+    fetch('/pastsession', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        window.location.reload(); // Reload the page to reflect the deletion
+      } else {
+        console.error('Failed to delete the message');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  });
+});
+
+///////////////////////////////////////EDIT SESSION BUTTON/////////////////////////////////////////////////////////////////////////////
+
+// Add event listeners to the buttons
+var editButtons = document.querySelectorAll(".fa-edit");
+
+(editButtons).forEach((element) => {
+  element.addEventListener('click', () => {
+    const id = element.getAttribute('data-id');
+    const sessionName = element.getAttribute('data-sessionName');
+    const pitchCount = element.getAttribute('data-pitchCount');
+    const ballCount = element.getAttribute('data-ballCount');
+    const strikeCount = element.getAttribute('data-strikeCount');
+
+    // Open a modal with the session data
+    openEditModal(id, sessionName, pitchCount, ballCount, strikeCount);
+  });
+});
+
+function openEditModal(id, sessionName, pitchCount, ballCount, strikeCount) {
+  // Get modal elements
+  var modal = document.getElementById('editModal');
+  var span = document.getElementsByClassName('close')[0];
+
+  // Populate modal with session data
+  document.getElementById('editSessionId').value = id;
+  document.getElementById('editSessionName').value = sessionName;
+  document.getElementById('editPitchCount').value = pitchCount;
+  document.getElementById('editBallCount').value = ballCount;
+  document.getElementById('editStrikeCount').value = strikeCount;
+
+  // Show the modal
+  modal.style.display = 'block';
+
+  // Close the modal when the user clicks on <span> (x)
+  span.onclick = function() {
+    modal.style.display = 'none';
+  }
+
+  // Close the modal when the user clicks anywhere outside of the modal
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  }
+}
+
+// Handle form submission for editing session
+document.getElementById('editForm').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const id = document.getElementById('editSessionId').value;
+  const sessionName = document.getElementById('editSessionName').value;
+  const pitchCount = document.getElementById('editPitchCount').value;
+  const ballCount = document.getElementById('editBallCount').value;
+  const strikeCount = document.getElementById('editStrikeCount').value;
+
+  // Send PUT request to the server
+  fetch('/pastsession', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      id: id,
+      sessionName: sessionName,
+      pitchCount: pitchCount,
+      ballCount: ballCount,
+      strikeCount: strikeCount
+    })
+  })
+  .then(response => {
+    if (response.ok) {
+      window.location.reload(); // Reload the page to reflect the changes
+    } else {
+      console.error('Failed to update session');
+    }
+  });
+});
+
+
+///////////////////////////////////////////////////////////////////////
+document.addEventListener('DOMContentLoaded', function() {
+  const editIcons = document.querySelectorAll('.edit-icon');
+  const editModal = document.getElementById('editModal');
+  const closeModal = document.querySelector('.close');
+  const editForm = document.getElementById('editForm');
+  const editSessionId = document.getElementById('editSessionId');
+  const editSessionName = document.getElementById('editSessionName');
+  const editStrikezoneData = document.getElementById('editStrikezoneData');
+
+  editIcons.forEach(icon => {
+    icon.addEventListener('click', function() {
+        const sessionId = this.getAttribute('data-sessionId');
+        const strikezoneData = this.getAttribute('data-strikezoneData');
+        // Populate the modal with the current data
+        editSessionId.value = sessionId;
+        editStrikezoneData.value = strikezoneData;
+        // Show the modal
+        editModal.style.display = 'block';
+    });
+});
+
+closeModal.addEventListener('click', function() {
+    editModal.style.display = 'none';
+});
+
+window.addEventListener('click', function(event) {
+    if (event.target == editModal) {
+        editModal.style.display = 'none';
+    }
+});
+
+editForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const sessionId = editSessionId.value;
+    const updatedStrikezoneData = editStrikezoneData.value;
+
+    fetch(`/sessions/${sessionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ strikezoneData: updatedStrikezoneData })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload(); // Reload the page to reflect the changes
+        } else {
+            console.error('Failed to update strikezone data');
+        }
+    });
+});
+});
+
+/////////////////////////////////////////////////////////////
+
+// Function to open the modal and populate the fields
+function openEditModal(sessionId, sessionName, strikezoneData) {
+  document.getElementById('editSessionId').value = sessionId;
+  document.getElementById('editSessionName').value = sessionName;
+  document.getElementById('editstrikezoneData').value = strikezoneData;
+
+  const modal = document.getElementById('editModal');
+  modal.style.display = 'block';
+}
+
+// Event listener for edit button/icon
+document.querySelectorAll('.editBtn').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    const sessionId = event.target.dataset.sessionId; // Replace with your dataset key
+    const sessionName = event.target.dataset.sessionName;
+    const strikezoneData = JSON.parse(event.target.dataset.strikezoneData);
+
+    openEditModal(sessionId, sessionName, strikezoneData);
+  });
+});
+
+// Close modal when 'Save' is clicked
+document.querySelector('.close').addEventListener('click', () => {
+  document.getElementById('editModal').style.display = 'none';
+});

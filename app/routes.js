@@ -17,6 +17,8 @@ module.exports = function(app, passport, db) {
       });
   });
 
+  
+
   // LOGOUT - End session and redirect
   app.get('/logout', function(req, res) {
     req.logout(function() {
@@ -51,16 +53,27 @@ module.exports = function(app, passport, db) {
     });
   });
 
-  // DELETE route to remove specific pitch data
-  app.delete('/tracker', (req, res) => {
-    const { id } = req.body;
-    if (!id) return res.status(400).send('Missing pitch ID.');
-    
-    db.collection('throws').deleteOne({ _id: new require('mongodb').ObjectID(id) }, (err, result) => {
-      if (err) return res.status(500).send('Error deleting pitch data.');
-      res.send('Pitch data deleted!');
-    });
-  });
+// deletes entry
+app.delete('/sessions', async (req, res) => {
+  try {
+      const { sessionId, sessionName, pitchCount, ballCount, strikeCount } = req.body;
+
+      // Perform deletion logic (example: delete from database)
+      const deletedSession = await session.findByIdAndDelete(sessionId);
+
+      if (!deletedSession) {
+          return res.status(404).send('Session not found');
+      }
+
+      // You could log the deleted data or perform any other necessary actions
+      console.log(`Deleted session: ${sessionName}, Pitch Count: ${pitchCount}, Ball Count: ${ballCount}, Strike Count: ${strikeCount}`);
+
+      res.status(200).send('Session deleted successfully');
+  } catch (error) {
+      console.error('Error deleting session:', error);
+      res.status(500).send('Server error');
+  }
+});
 
   // LOGIN - Show login form
   app.get('/login', function(req, res) {

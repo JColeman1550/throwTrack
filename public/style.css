@@ -484,24 +484,71 @@ th, td, tr {
 
 /* MacBook Pro */
 @media (min-width: 900px) and (max-width: 1440px) {
+ /* jumbotron container */
+.jumbotron {
+  background-color: white;
+  border-radius: 5px;
+  padding: 30px 20px;
+  text-align: center;
+}
+  
+  /* main container */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+  
+  
+  
+  
   .row {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 20px;
-      text-align: center;
-  }
-
-  .row h1 {
-    align-items: center ;
   }
 
   .col-sm-6 {
       flex: 1;
-      min-width: 50%;
+      width: 90%;
   }
 
   .page-header {
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  .strikezone {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+  }
+
+  .strikezone-box {
+      font-size: 14px;
+      padding: 15px;
+  }
+
+  
+
+  .counter-button {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .end-session-button {
+      width: 100%;
   }
 
 
@@ -509,13 +556,8 @@ th, td, tr {
     width: 100%; 
 }
 th, td, tr {
-    font-size: 3rem; 
+    font-size: 2.5rem; 
 }
-
-h1 {
-  text-align: center;
-}
-
 
 
 }

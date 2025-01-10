@@ -15,6 +15,7 @@
     <div class="page-header text-center">
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
         <a href="/tracker" class="btn btn-default btn-sm">Back to Tracker</a>
+        <a href="/pastsession" class="btn btn-default btn-sm">Back to Past Sessions</a>
         <a href="/strikezonedata" class="btn btn-default btn-sm">Zone Distribution</a>
     </div>
 <!-------------------------STRIKEZONE DATA TABLE---------------------------------------------------------------->
@@ -28,7 +29,7 @@
                     <tr>
                         <th>Session Name</th>
                        
-                        <th>Strike Zone Data</th>
+                        <th>Zone Distribution</th>
                         
                     </tr>
                 </thead>
@@ -41,12 +42,61 @@
                     
                             <td><%= JSON.stringify(session.strikezoneData) %></td>
                             
+                            <td>
+                                <i class="fa fa-trash-o delete-session" 
+                                data-id="<%= session._id %>" 
+                                data-sessionName="<%= session.sessionName %>"
+                                data-strikezoneData="<%= session.strikezoneData %>"
+                                aria-hidden="true" 
+                                style="cursor: pointer; color: red;"></i>
+
+                                <i class="fa fa-edit edit-session"
+                                data-sessionId="<%= session._id %>" 
+                                data-sessionName="<%= session.sessionName %>"
+                                data-strikezoneData="<%= session.strikezoneData %>" 
+                                aria-hidden="true" 
+                                style="cursor: pointer; color: blue;"></i>
+                            </td>
+
                         </tr>
                     <% }); %>
                 </tbody>
             </table>
         </div>
-
+      <div id="editModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Edit Session</h2>
+              <form id="editForm">
+                <input type="hidden" id="editSessionId">
+                <label for="editSessionName">Session Name:</label>
+                <input type="text" id="editSessionName" name="sessionName"><br>
+                <label for="editstrikezoneData">Zone 1:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 2:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 3:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 4:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 5:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 6:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 7:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 8:</label>
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <label for="editstrikezoneData">Zone 9:</label>
+    
+                <input type="number" id="editstrikezoneData" name="strikezoneData"><br>
+                <button type="submit">Save</button>
+              </form>
+            </div>
+          </div>
+              </form>
+            </div>
+          </div>
         
     </div>
 </div>

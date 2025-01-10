@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 
 const configDB = require('./config/database.js');
+const ObjectId = mongoose.Types.ObjectId;
 
 ///////////////////////////////////CONFIGURATION///////////////////////////////////////////////////////////////////
 mongoose.connect(configDB.url, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -48,14 +49,13 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
-
 ///////////////////////////////////////////API ROUTES///////////////////////////////////////////////////////////
 
 //POST adding new session to DB
 app.post('/sessions', (req, res) => {
   const { sessionName, sessionDate, pitchCount, strikeCount, ballCount } = req.body;
 
-// required fields
+  // required fields
   if (!sessionName || !sessionDate || !pitchCount || !strikeCount || !ballCount) {
     return res.status(400).json({ message: 'All fields are required' });
   }
@@ -89,8 +89,7 @@ app.get('/pastsession', (req, res) => {
   });
 });
 
-
-app.get('/strikezonedata', (req, res) => {
+app.get('/pastsession', (req, res) => {
   mongoose.connection.db.collection('sessions').find().toArray((err, sessions) => {
     if (err) {
       console.error('Error fetching session data:', err);
@@ -117,6 +116,57 @@ app.put('/countUp', (req, res) => {
     );
 });
 
+// PUT request to update a session
+app.put('/pastsession', (req, res) => {
+  const { id, sessionName, pitchCount, ballCount, strikeCount } = req.body;
+
+  mongoose.connection.db.collection('sessions').findOneAndUpdate(
+    { _id: ObjectId(id) },
+    {
+      $set: {
+        sessionName: sessionName,
+        pitchCount: pitchCount,
+        ballCount: ballCount,
+        strikeCount: strikeCount
+      }
+    },
+    { returnOriginal: false },
+    (err, result) => {
+      if (err) {
+        console.error('Failed to update session:', err);
+        return res.status(500).send('Failed to update session');
+      }
+      res.status(200).send('Session updated successfully');
+    }
+  );
+});
+
+
+// PUT route to update strikezone data
+app.put('/sessions/:id', (req, res) => {
+  const sessionId = req.params.id;
+  const { strikezoneData } = req.body;
+
+  if (!strikezoneData) {
+    return res.status(400).json({ message: 'Strikezone data is required' });
+  }
+
+  mongoose.connection.db.collection('sessions').updateOne(
+    { _id: new mongoose.Types.ObjectId(sessionId) },
+    { $set: { strikezoneData: strikezoneData } },
+    (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Failed to update strikezone data' });
+      }
+      res.status(200).json({ message: 'Strikezone data updated successfully' });
+    }
+  );
+});
+
+
+
+
+
 // decrements pitch count
 app.put('/countDown', (req, res) => {
   mongoose.connection.db.collection('throws')
@@ -132,22 +182,30 @@ app.put('/countDown', (req, res) => {
 });
 
 // deletes entry
-app.delete('/messages', (req, res) => {
-  mongoose.connection.db.collection('throws').findOneAndDelete(
-    { name: req.body.name, msg: req.body.msg },
-    (err) => {
-      if (err) return res.status(500).send(err);
+app.delete('/pastsession', (req, res) => {
+  // Destructure the values from the request body
+  const { id } = req.body;
+  console.log("delete req", req.body);
+
+  // Find and delete the document in the 'session' collection
+  mongoose.connection.db.collection('sessions').findOneAndDelete({ _id: ObjectId(id) },
+    (err, result) => {
+      // If there is an error, send a 500 status with the error
+      if (err) return res.send(500, err);
+
+      // If successful, send a success message
       res.send('Message deleted!');
     }
   );
 });
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // new route to handle past session data (from frontend)
 app.post('/pastsession', (req, res) => {
-  const { sessionName,pitchCount, ballCount, strikeCount, strikezoneData, sessionEndedAt } = req.body;
+  const { sessionName, pitchCount, ballCount, strikeCount, strikezoneData, sessionEndedAt } = req.body;
 
-  if (sessionName === undefined||pitchCount === undefined || ballCount === undefined || strikeCount === undefined || !strikezoneData) {
+  if (sessionName === undefined || pitchCount === undefined || ballCount === undefined || strikeCount === undefined || !strikezoneData) {
     return res.status(400).json({ message: 'Pitch count, ball count, strike count, and strike zone data are required' });
   }
 
@@ -159,7 +217,7 @@ app.post('/pastsession', (req, res) => {
     strikeCount,
     strikezoneData,
     sessionEndedAt,
-    timestamp: new Date()  
+    timestamp: new Date()
   }, (err, result) => {
     if (err) {
       console.error('Error adding session data:', err);
@@ -168,7 +226,6 @@ app.post('/pastsession', (req, res) => {
     res.status(201).json({ message: 'Session data saved successfully', id: result.insertedId });
   });
 });
-
 
 ////////////////////////////////////////LAUNCH/////////////////////////////////////////////////////////////////
 app.listen(port, () => {
